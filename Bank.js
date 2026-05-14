@@ -7,7 +7,16 @@ class Bank {
 
     // Add methods here:
     // Example: createAccount(name, initialDeposit)
-
+    createAccount(name, initialDeposit) {
+        if (!name) {
+            console.log("Error: person name is required.");
+            return false;
+        }
+        
+        const newAccount = new Account(name, initialDeposit);
+        this.accounts.push(newAccount);
+        return newAccount;
+    }
 }
 
 // Account Class: Represents a single user's account
