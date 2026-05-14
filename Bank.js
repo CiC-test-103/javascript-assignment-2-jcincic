@@ -30,7 +30,18 @@ class Account {
     // Add methods here:
     // Example: deposit(amount) 
     // example data to be stored in transactionHistory { transactionType: 'Deposit', amount: 500 }
-
+    deposit(amount) {
+        if (!amount) {
+            console.log("Error: amount is required.");
+            return false;
+        } else if (typeof amount != "number" || amount <= 0) {
+            console.log("Error: amount must a positive number.");
+            return false;
+        } else {
+            this.balance += amount;
+            this.transactionHistory.push({ transactionType: "Deposit", amount: amount});
+        }
+    }
     // Example: withdraw(amount)
     // example data to be stored in transactionHistory { transactionType: 'Withdrawal', amount: 200 }
 
