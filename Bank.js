@@ -12,6 +12,10 @@ class Bank {
             console.log("Error: person name is required.");
             return false;
         }
+        if (initialDeposit !== undefined && (typeof initialDeposit !== "number" || initialDeposit <0 )) {
+            console.log("Error: initial deposite must be a positive number.");
+            return false;
+        }
         
         const newAccount = new Account(name, initialDeposit);
         this.accounts.push(newAccount);
@@ -34,8 +38,8 @@ class Account {
         if (!amount) {
             console.log("Error: amount is required.");
             return false;
-        } else if (typeof amount != "number" || amount <= 0) {
-            console.log("Error: amount must a positive number.");
+        } else if (typeof amount !== "number" || amount <= 0) {
+            console.log("Error: amount must be a positive number.");
             return false;
         } else {
             this.balance += amount;
@@ -45,12 +49,48 @@ class Account {
     // Example: withdraw(amount)
     // example data to be stored in transactionHistory { transactionType: 'Withdrawal', amount: 200 }
 
+    withdraw(amount) {
+        if (!amount) {
+            console.log("Error: amount is required.");
+            return false;
+        } else if (typeof amount !== "number" || amount <= 0) {
+            console.log("Error: amount must be a positive number.");
+            return false;
+        } else if (amount > this.balance) {
+            console.log("Error: balance is lower than the withdrawal");
+            return false;
+        } else {
+            this.balance -= amount;
+            this.transactionHistory.push({ transactionType: "Withdrawal", amount: amount});
+        }
+    }
+
     // Example: transfer(amount, recipientAccount)
     // example data to be stored in transactionHistory:
     // for account sending { transactionType: 'Transfer', amount: 300, to: recipientName }
     // for account recieving { transactionType: 'Received', amount: 300, from: senderName }
-    
+    transfer(amount, recipientAccount) {
+        if (!amount || !recipientAccount) {
+            console.log("Error: amount and recipient are required.");
+            return false;
+        } else if(typeof amount !== "number" || amount <= 0) {
+            console.log("Error: amount must be a positive number.");
+            return false;
+        } else if(amount > this.balance) {
+            console.log("Error: balance is lower than the requested amount.");
+            return false;
+        } else {
+            this.balance -= amount;
+            recipientAccount.balance +=amount;
+            this.transactionHistory.push({ transactionType: "Transfer", amount: amount, to: recipientAccount.name });
+            recipientAccount.transactionHistory.push({ transactionType: "Received", amount: amount, from: this.name });
+        }
+    }
     // Example: checkBalance()
+    checkBalance() {
+        return this.balance;
+    }
+
 }
 
 //<-------------------------------DO NOT WRITE BELOW THIS LINE------------------------------>
